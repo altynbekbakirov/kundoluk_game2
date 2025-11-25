@@ -1,0 +1,68 @@
+name: bilim_sayakatchysy
+description: Кыргыз тилиндеги илимий-билим берүүчү интерактивдүү RPG оюну / Educational interactive RPG game in Kyrgyz language
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # State Management
+  provider: ^6.1.1
+  
+  # HTTP & API
+  http: ^1.1.0
+  
+  # UI Components
+  google_fonts: ^6.1.0
+  flutter_svg: ^2.0.9
+  
+  # Icons
+  cupertino_icons: ^1.0.6
+  
+  # Local Storage
+  shared_preferences: ^2.2.2
+  
+  # Loading indicators
+  loading_animation_widget: ^1.2.0+4
+  
+  # Environment variables removed - using --dart-define for security
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_launcher_icons: ^0.14.2
+  flutter_native_splash: ^2.3.10
+  flutter_lints: ^3.0.0
+
+# App Icon Configuration
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/logo.png"
+  min_sdk_android: 21
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/images/logo.png"
+
+# Splash Screen Configuration
+flutter_native_splash:
+  color: "#0f172a"
+  image: assets/splash/splash_icon.png
+  android: true
+  ios: false
+  android_12:
+    color: "#0f172a"
+    image: assets/splash/splash_icon.png
+
+flutter:
+  uses-material-design: true
+  
+  assets:
+    # .env removed for security - API key provided at build time via --dart-define
+    - assets/images/
+    - assets/icon/
+    - assets/splash/
+

@@ -1,0 +1,71 @@
+import '../models/enums.dart';
+
+class UIText {
+  static Map<Language, Map<String, String>> translations = {
+    Language.kyrgyz: {
+      'energy': 'Билим Энергиясы',
+      'loadingLevel': 'Кийинки деңгээл жүктөлүүдө...',
+      'loadingStart': 'Илимий маалыматтар жүктөлүүдө...',
+      'gameOverTitle': 'Оюн бүттү',
+      'gameOverDesc': 'Билим энергиясы түгөндү. Илимди кайра кайталап, кайра аракет кылыңыз!',
+      'restart': 'Кайра баштоо',
+      'victoryTitle': 'Жеңиш!',
+      'victoryDesc': 'Сиз бардык сыноолордон илимдин жардамы менен өттүңүз.',
+      'mainMenu': 'Башкы меню',
+      'helper': 'Жардамчы',
+      'guide': 'Гид',
+      'defaultHelperQuote': 'Илимге таян, ошондо жол табасың.',
+      'task': 'Тапшырма:',
+      'level': 'Деңгээл:',
+      'correct': 'Туура!',
+      'incorrect': 'Туура эмес!',
+      'nextLevel': 'Кийинки деңгээл',
+      'errorStart': 'Оюнду баштоодо ката кетти. API ачкычын текшериңиз же кайра аракет кылыңыз.',
+      'errorNext': 'Жоопту иштеп чыгууда ката кетти. Сураныч, кайра аракет кылыңыз.',
+      'energyChange': 'Энергия',
+      'title': 'Билим Саякатчысы',
+      'subtitle': 'Илимий билим — сенин эң күчтүү куралың. Классты жана окуяны танда.',
+      'selectGrade': 'Классты тандаңыз:',
+      'selectTheme': 'Окуяны тандаңыз:',
+      'startBtn': 'Саякатты баштоо',
+      'selectLanguage': 'Тилди тандаңыз / Выберите язык',
+      'gameInKyrgyz': 'Оюн кыргыз тилинде',
+      'changeLanguage': 'Тилди өзгөртүү',
+    },
+    Language.russian: {
+      'energy': 'Энергия Знаний',
+      'loadingLevel': 'Загрузка следующего уровня...',
+      'loadingStart': 'Загрузка научных данных...',
+      'gameOverTitle': 'Игра окончена',
+      'gameOverDesc': 'Энергия знаний исчерпана. Повторите материал и попробуйте снова!',
+      'restart': 'Начать заново',
+      'victoryTitle': 'Победа!',
+      'victoryDesc': 'Вы прошли все испытания с помощью науки.',
+      'mainMenu': 'Главное меню',
+      'helper': 'Помощник',
+      'guide': 'Гид',
+      'defaultHelperQuote': 'Полагайся на науку, и найдешь путь.',
+      'task': 'Задание:',
+      'level': 'Уровень:',
+      'correct': 'Правильно!',
+      'incorrect': 'Неправильно!',
+      'nextLevel': 'Следующий уровень',
+      'errorStart': 'Ошибка при запуске игры. Проверьте API ключ или попробуйте снова.',
+      'errorNext': 'Ошибка обработки ответа. Пожалуйста, попробуйте снова.',
+      'energyChange': 'Энергия',
+      'title': 'Путешественник Знаний',
+      'subtitle': 'Знание — твое самое сильное оружие. Выбери класс и сценарий.',
+      'selectGrade': 'Выберите класс:',
+      'selectTheme': 'Выберите сценарий:',
+      'startBtn': 'Начать путешествие',
+      'selectLanguage': 'Тилди тандаңыз / Выберите язык',
+      'gameInRussian': 'Игра на русском языке',
+      'changeLanguage': 'Сменить язык',
+    },
+  };
+
+  static String get(String key, Language language) {
+    return translations[language]?[key] ?? key;
+  }
+}
+
