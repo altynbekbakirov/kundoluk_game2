@@ -8,10 +8,7 @@ class GeminiService {
   static const String _modelName = 'gemini-2.0-flash-exp';
   
   // Secure: API key compiled into binary at build time, not extractable from APK
-  static const String _apiKey = String.fromEnvironment(
-    'GEMINI_API_KEY',
-    defaultValue: '',
-  );
+  static const String _apiKey = "AIzaSyCP9YK1EUXqvpBA6dG2_GJbGrULEMsXVe0";
 
   GeminiService() {
     if (_apiKey.isEmpty) {
