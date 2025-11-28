@@ -5,8 +5,15 @@ import '../utils/localization.dart';
 
 class StartScreen extends StatefulWidget {
   final Function(GradeLevel, ScenarioTheme, Language) onStart;
+  final Language? initialLanguage;
+  final GradeLevel? initialGrade;
 
-  const StartScreen({Key? key, required this.onStart}) : super(key: key);
+  const StartScreen({
+    Key? key,
+    required this.onStart,
+    this.initialLanguage,
+    this.initialGrade,
+  }) : super(key: key);
 
   @override
   State<StartScreen> createState() => _StartScreenState();
@@ -17,6 +24,18 @@ class _StartScreenState extends State<StartScreen> {
   Language _language = Language.kyrgyz;
   GradeLevel _grade = GradeLevel.grade8;
   ScenarioTheme _theme = ScenarioTheme.timeTravelFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialLanguage != null) {
+      _language = widget.initialLanguage!;
+      _step = 'setup';
+    }
+    if (widget.initialGrade != null) {
+      _grade = widget.initialGrade!;
+    }
+  }
 
   void _handleLanguageSelect(Language lang) {
     setState(() {
@@ -157,7 +176,7 @@ class _StartScreenState extends State<StartScreen> {
             Text(
               UIText.get('title', _language),
               style: TextStyle(
-                fontSize: 40,
+                fontSize: 36,
                 fontWeight: FontWeight.bold,
                 foreground: Paint()
                   ..shader = const LinearGradient(

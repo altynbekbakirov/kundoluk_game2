@@ -14,6 +14,7 @@ class GameScreen extends StatelessWidget {
   final TurnResult? lastResult;
   final Function(String, String) onChoiceSelected;
   final VoidCallback onProceedToNext;
+  final VoidCallback onExit;
 
   const GameScreen({
     Key? key,
@@ -25,112 +26,182 @@ class GameScreen extends StatelessWidget {
     this.lastResult,
     required this.onChoiceSelected,
     required this.onProceedToNext,
+    required this.onExit,
   }) : super(key: key);
+
+  void _showExitConfirmation(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: const Color(0xFF1E293B),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: const BorderSide(color: Color(0xFF334155)),
+        ),
+        title: Text(
+          UIText.get('exitGameTitle', language) == 'exitGameTitle' 
+              ? (language == Language.kyrgyz ? 'Оюндан чыгуу' : 'Выход из игры')
+              : UIText.get('exitGameTitle', language),
+          style: const TextStyle(color: Colors.white),
+        ),
+        content: Text(
+          UIText.get('exitGameConfirm', language) == 'exitGameConfirm'
+              ? (language == Language.kyrgyz ? 'Чын эле оюндан чыккыңыз келеби?' : 'Вы действительно хотите выйти из игры?')
+              : UIText.get('exitGameConfirm', language),
+          style: const TextStyle(color: Color(0xFFCBD5E1)),
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+            child: Text(
+              UIText.get('cancel', language) == 'cancel'
+                  ? (language == Language.kyrgyz ? 'Жок' : 'Нет')
+                  : UIText.get('cancel', language),
+              style: const TextStyle(color: Colors.white),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              onExit();
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            child: Text(
+              UIText.get('exit', language) == 'exit'
+                  ? (language == Language.kyrgyz ? 'Ооба' : 'Да')
+                  : UIText.get('exit', language),
+              style: const TextStyle(color: Colors.white),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final hasAnswered = selectedChoiceId != null;
     final choiceLabels = ['A', 'B', 'C', 'D'];
 
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 16),
-            // Energy Bar and NPC Section
-            Row(
-              children: [
-                Expanded(
-                  child: EnergyBar(
-                    current: energy,
-                    label: UIText.get('energy', language),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            // NPC Card
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: const Color(0xFF1E293B).withOpacity(0.5),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: const Color(0xFF334155)),
-              ),
-              child: Row(
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        if (didPop) return;
+        _showExitConfirmation(context);
+      },
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 16),
+              // Energy Bar and NPC Section
+              Row(
                 children: [
-                  Container(
-                    width: 48,
-                    height: 48,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF312E81).withOpacity(0.5),
-                      shape: BoxShape.circle,
-                      border: Border.all(color: const Color(0xFF6366F1).withOpacity(0.3)),
-                    ),
-                    child: const Icon(
-                      Icons.psychology,
-                      color: Color(0xFF818CF8),
-                      size: 24,
+                  Expanded(
+                    child: EnergyBar(
+                      current: energy,
+                      label: UIText.get('energy', language),
                     ),
                   ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              turnData.npcName ?? UIText.get('helper', language),
-                              style: const TextStyle(
-                                color: Color(0xFF818CF8),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFF334155).withOpacity(0.5),
-                                borderRadius: BorderRadius.circular(4),
-                                border: Border.all(color: const Color(0xFF475569)),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  const Icon(Icons.lightbulb_outline, size: 12, color: Color(0xFF94A3B8)),
-                                  const SizedBox(width: 4),
-                                  Text(
-                                    UIText.get('guide', language),
-                                    style: const TextStyle(
-                                      color: Color(0xFF94A3B8),
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          '"${turnData.npcDialogue ?? UIText.get('defaultHelperQuote', language)}"',
-                          style: const TextStyle(
-                            color: Color(0xFFCBD5E1),
-                            fontSize: 14,
-                            fontStyle: FontStyle.italic,
-                          ),
-                        ),
-                      ],
+                  const SizedBox(width: 12),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFEF4444).withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: const Color(0xFFEF4444).withOpacity(0.5)),
+                    ),
+                    child: IconButton(
+                      icon: const Icon(Icons.logout, color: Color(0xFFEF4444)),
+                      onPressed: () => _showExitConfirmation(context),
+                      tooltip: language == Language.kyrgyz ? 'Чыгуу' : 'Выход',
                     ),
                   ),
                 ],
               ),
-            ),
+              const SizedBox(height: 16),
+              // NPC Card
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1E293B).withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: const Color(0xFF334155)),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 48,
+                      height: 48,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF312E81).withOpacity(0.5),
+                        shape: BoxShape.circle,
+                        border: Border.all(color: const Color(0xFF6366F1).withOpacity(0.3)),
+                      ),
+                      child: const Icon(
+                        Icons.psychology,
+                        color: Color(0xFF818CF8),
+                        size: 24,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                turnData.npcName ?? UIText.get('helper', language),
+                                style: const TextStyle(
+                                  color: Color(0xFF818CF8),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFF334155).withOpacity(0.5),
+                                  borderRadius: BorderRadius.circular(4),
+                                  border: Border.all(color: const Color(0xFF475569)),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Icon(Icons.lightbulb_outline, size: 12, color: Color(0xFF94A3B8)),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      UIText.get('guide', language),
+                                      style: const TextStyle(
+                                        color: Color(0xFF94A3B8),
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            '"${turnData.npcDialogue ?? UIText.get('defaultHelperQuote', language)}"',
+                            style: const TextStyle(
+                              color: Color(0xFFCBD5E1),
+                              fontSize: 14,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             const SizedBox(height: 24),
             // Story Card
             Container(
@@ -416,7 +487,7 @@ class GameScreen extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ));
   }
 }
 

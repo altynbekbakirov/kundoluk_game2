@@ -20,7 +20,15 @@ class GameProvider with ChangeNotifier {
   GameState get state => _state;
   final GeminiService _geminiService = GeminiService();
 
+  bool _hasPlayed = false;
+  bool get hasPlayed => _hasPlayed;
+
+  GradeLevel _lastGrade = GradeLevel.grade8;
+  GradeLevel get lastGrade => _lastGrade;
+
   Future<void> startGame(GradeLevel grade, ScenarioTheme theme, Language language) async {
+    _hasPlayed = true;
+    _lastGrade = grade;
     _state = GameState(
       status: GameStatus.loading,
       grade: grade,
@@ -132,7 +140,7 @@ class GameProvider with ChangeNotifier {
       status: GameStatus.idle,
       grade: GradeLevel.grade8,
       theme: ScenarioTheme.timeTravelFuture,
-      language: Language.kyrgyz,
+      language: _state.language, // Preserve language
       energy: initialEnergy,
       turnCount: 0,
       history: [],

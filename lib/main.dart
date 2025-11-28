@@ -42,12 +42,12 @@ class MyApp extends StatelessWidget {
           textTheme: GoogleFonts.interTextTheme(
             ThemeData.dark().textTheme,
           ),
-          colorScheme: ColorScheme.dark(
-            primary: const Color(0xFF4F46E5),
-            secondary: const Color(0xFF818CF8),
-            surface: const Color(0xFF1E293B),
-            background: const Color(0xFF0F172A),
-            error: const Color(0xFFEF4444),
+          colorScheme: const ColorScheme.dark(
+            primary: Color(0xFF4F46E5),
+            secondary: Color(0xFF818CF8),
+            surface: Color(0xFF1E293B),
+            background: Color(0xFF0F172A),
+            error: Color(0xFFEF4444),
           ),
         ),
         home: const GameApp(),
@@ -155,6 +155,8 @@ class GameApp extends StatelessWidget {
     switch (state.status) {
       case GameStatus.idle:
         return StartScreen(
+          initialLanguage: gameProvider.hasPlayed ? state.language : null,
+          initialGrade: gameProvider.hasPlayed ? gameProvider.lastGrade : null,
           onStart: (grade, theme, language) {
             gameProvider.startGame(grade, theme, language);
           },
@@ -202,6 +204,7 @@ class GameApp extends StatelessWidget {
           onProceedToNext: () {
             gameProvider.proceedToNextTurn();
           },
+          onExit: gameProvider.resetGame,
         );
 
       default:
